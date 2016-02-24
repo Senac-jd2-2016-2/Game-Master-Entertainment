@@ -1,19 +1,22 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Game1
 {
     class Contexto
     {
-        public static Atr[] perso = new Atr[5];
+        public static Personagem[] perso = new Personagem[5];
+        public static Personagem PG = new Personagem(150, 240);
+        public static Texture2D BG;
 
         public static void Inicializar (ContentManager content)
         {
-            jogador.texture = content.Load<Textura2D>("Pe");
+            PG.texture = content.Load<Texture2D>("Pe");
+            BG = content.Load<Texture2D>("Algo");
         }
     }
 }

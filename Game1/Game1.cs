@@ -23,11 +23,13 @@ namespace Game1
 
         protected override void LoadContent()
         {
+            Contexto.Inicializar(Content);
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void UnloadContent()
         {
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -35,13 +37,39 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            Keys[] keys = Keyboard.GetState().GetPressedKeys();
+            foreach(Keys k in keys)
+            {
+                if (k.Equals(Keys.Up))
+                {
+                    Contexto.PG.moverY(-2);
+                }
+                if (k.Equals(Keys.Down))
+                {
+                    Contexto.PG.moverY(2);
+                }
+                if (k.Equals(Keys.Right))
+                {
+                    Contexto.PG.moverX(2);
+                }
+                if (k.Equals(Keys.Left))
+                {
+                    Contexto.PG.moverX(-2);
+                }
+            }
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
 
+            spriteBatch.Draw(Contexto.BG, new Rectangle(0, 0, 800, 480), Color.White);
+            spriteBatch.Draw(Contexto.PG.texture, Contexto.PG.getVector(), Color.White);
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
