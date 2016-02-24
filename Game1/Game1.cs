@@ -18,7 +18,8 @@ namespace Game1
 
         protected override void Initialize()
         {
-            base.Initialize();
+            base.Initialize();  
+
         }
 
         protected override void LoadContent()
