@@ -18,7 +18,6 @@ namespace Game1
         public int x;
         public int y;
         public Texture2D texture;
-        
 
         public Personagem(int x1, int y1)
         {

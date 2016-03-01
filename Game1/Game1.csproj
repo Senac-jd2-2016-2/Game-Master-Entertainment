@@ -41,6 +41,7 @@
     <Compile Include="Classes\Atr.cs" />
     <Compile Include="Classes\AtrD.cs" />
     <Compile Include="Classes\Contexto.cs" />
+    <Compile Include="Classes\Fases.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Classes\Inimigos.cs" />
     <Compile Include="Program.cs" />
@@ -55,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Algo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Chão.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Panda.jpg">

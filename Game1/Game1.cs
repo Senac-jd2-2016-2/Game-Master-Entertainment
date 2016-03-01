@@ -42,19 +42,19 @@ namespace Game1
             Keys[] keys = Keyboard.GetState().GetPressedKeys();
             foreach(Keys k in keys)
             {
-                if (k.Equals(Keys.Up))
+                if (k.Equals(Keys.W))
                 {
                     Contexto.PG.moverY(-2);
                 }
-                if (k.Equals(Keys.Down))
+                if (k.Equals(Keys.S))
                 {
                     Contexto.PG.moverY(2);
                 }
-                if (k.Equals(Keys.Right))
+                if (k.Equals(Keys.D))
                 {
                     Contexto.PG.moverX(2);
                 }
-                if (k.Equals(Keys.Left))
+                if (k.Equals(Keys.A))
                 {
                     Contexto.PG.moverX(-2);
                 }
@@ -69,8 +69,10 @@ namespace Game1
             spriteBatch.Begin();
 
             spriteBatch.Draw(Contexto.BG, new Rectangle(0, 0, 800, 480), Color.White);
-            spriteBatch.Draw(Contexto.PG.texture, Contexto.PG.getVector(), Color.White);
+            spriteBatch.Draw(Contexto.CH.texture, Contexto.CH.getVector(), Color.White);
             spriteBatch.Draw(Contexto.IN.texture, Contexto.IN.getVector(), Color.White);
+            spriteBatch.Draw(Contexto.PG.texture, Contexto.PG.getVector(), Color.White);
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
