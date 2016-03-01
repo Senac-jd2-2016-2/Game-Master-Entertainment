@@ -70,7 +70,7 @@ namespace Game1
 
             spriteBatch.Draw(Contexto.BG, new Rectangle(0, 0, 800, 480), Color.White);
             spriteBatch.Draw(Contexto.PG.texture, Contexto.PG.getVector(), Color.White);
-
+            spriteBatch.Draw(Contexto.IN.texture, Contexto.IN.getVector(), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }
