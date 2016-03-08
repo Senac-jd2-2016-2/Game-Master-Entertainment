@@ -36,7 +36,7 @@ namespace Jumping
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            spriteBatch.Draw(Fruit, Position, Color.White);
         }
     }
 }

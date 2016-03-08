@@ -157,7 +157,6 @@ namespace Game1
             u = 0;
         }
 
-
         internal void Draw(SpriteBatch spriteBatch)
         {
             throw new NotImplementedException();

@@ -15,7 +15,7 @@ namespace Jumping
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        KeyboardState prevKB;
+        KeyboardState tecle;
 
         Personagem Lycans;
         List<Plataforma> Plats;
@@ -33,7 +33,6 @@ namespace Jumping
 
             this.graphics.PreferredBackBufferWidth = 800;
             this.graphics.PreferredBackBufferHeight = 500;
-
             this.graphics.ApplyChanges();
         }
 
@@ -159,7 +158,7 @@ namespace Jumping
                 }
             }
 
-            prevKB = Keyboard.GetState();
+            tecle = Keyboard.GetState();
 
             base.Update(gameTime);
         }
@@ -167,13 +166,13 @@ namespace Jumping
         void HandleInput(KeyboardState keyState)
         {
             Lycans.Input(keyState);
-            if (prevKB.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
+            if (tecle.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
             {
                 this.graphics.ToggleFullScreen();
                 this.graphics.ApplyChanges();
             }
 
-            if (prevKB.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
+            if (tecle.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
             {
                 currentLevel = (currentLevel + 1) % Levels.Count;
                 LoadLevel(currentLevel);
