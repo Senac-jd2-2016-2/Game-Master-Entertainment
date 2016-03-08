@@ -23,17 +23,24 @@ namespace Game1
 
         private Rectangle screenBound;
 
-        public bool isJumping; //are we jumping or not
-        public bool goingUp; //if going up or not
+        public bool isJumping; //Are we jumping or not
+        public bool goingUp; //If going up or not
 
-        public float u; //initial velocity
+        public float u; //Initial velocity
         private float jumpU;
-        private float g; //gravity
-        public float t; //time
+        private float g; //Gravity
+        public float t; //Time
 
-        private KeyboardState prevKB;
+        private KeyboardState tecle;
         private int p1;
         private int p2;
+
+        public Texture2D Lycans { get; private set; }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Lycans, new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height), Color.White);
+        }
 
         public Personagem(Texture2D Texture, Vector2 Position, float Speed, Rectangle screenBound)
         {
@@ -51,7 +58,6 @@ namespace Game1
 
         public Personagem(int p1, int p2)
         {
-            // TODO: Complete member initialization
             this.p1 = p1;
             this.p2 = p2;
         }
@@ -61,13 +67,11 @@ namespace Game1
             Position.X += (Velocity.X * Speed);
             //Set the Y position to be subtracted so that the upward movement would be done by decreasing the Y value
             Position.Y -= (Velocity.Y * Speed);
-
             goingUp = (Velocity.Y > 0);
-
-            // TODO: Add your update logic here
+            
             if (isJumping == true)
             {
-                //motion equation using velocity: v = u + at
+                //Motion equation using velocity: v = u + at
                 Velocity.Y = (float)(u + (g * t));
                 //Increase the timer
                 t += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -82,26 +86,26 @@ namespace Game1
 
             if (Position.X < 0)
             {
-                //if Texture touches left side of the screen, set the position to zero and the velocity to zero.
+                //If Texture touches left side of the screen, set the position to zero and the velocity to zero.
                 Position.X = 0;
                 Velocity.X = 0;
             }
             else if (Position.X + Texture.Width > screenBound.Width)
             {
-                //if Texture touches left side of the screen, set the position to zero and the velocity to zero.
+                //If Texture touches left side of the screen, set the position to zero and the velocity to zero.
                 Position.X = screenBound.Width - Texture.Width;
                 Velocity.X = 0;
             }
             if (Position.Y < 0)
             {
-                //if the Texture touches the top of the screen, reset the timer and set the initial velocity to zero.
+                //If the Texture touches the top of the screen, reset the timer and set the initial velocity to zero.
                 Position.Y = 0;
                 t = 0;
                 u = 0;
             }
         }
 
-        public void Input(KeyboardState keyState)
+        public void Entrada(KeyboardState keyState)
         {
             if (keyState.IsKeyDown(Keys.W) && (isJumping == false || Position.Y == ground))
             {
@@ -148,18 +152,13 @@ namespace Game1
                     Velocity.X = 0;
             }
             
-            prevKB = keyState;
+            tecle = keyState;
         }
 
         public void Fall()
         {
             t = 0;
             u = 0;
-        }
-
-        internal void Draw(SpriteBatch spriteBatch)
-        {
-            throw new NotImplementedException();
         }
     }
 }

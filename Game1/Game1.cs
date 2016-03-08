@@ -165,7 +165,7 @@ namespace Jumping
 
         void HandleInput(KeyboardState keyState)
         {
-            Lycans.Input(keyState);
+            Lycans.Entrada(keyState);
             if (tecle.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
             {
                 this.graphics.ToggleFullScreen();
@@ -184,6 +184,7 @@ namespace Jumping
             GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin();
+
             foreach (Plataforma b in Plats)
             {
                 b.Draw(spriteBatch);
@@ -192,8 +193,7 @@ namespace Jumping
             {
                 c.Draw(spriteBatch);
             }
-
-            Lycans.Draw(spriteBatch);
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }

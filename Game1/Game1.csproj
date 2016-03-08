@@ -38,7 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classes\Atr.cs" />
+    <Compile Include="Classes\Personagem.cs" />
     <Compile Include="Classes\AtrD.cs" />
     <Compile Include="Classes\Contexto.cs" />
     <Compile Include="Classes\Fases.cs" />
