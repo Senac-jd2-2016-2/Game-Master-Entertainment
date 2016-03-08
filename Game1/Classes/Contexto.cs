@@ -18,7 +18,7 @@ namespace Game1
         public static void Inicializar (ContentManager content)
         {
             CH.texture = content.Load<Texture2D>("Chão");
-            PG.texture = content.Load<Texture2D>("Pe");
+            PG.Texture = content.Load<Texture2D>("Pe");
             IN.texture = content.Load<Texture2D>("Panda");
             BG = content.Load<Texture2D>("Algo");
         }

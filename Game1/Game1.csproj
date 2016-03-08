@@ -42,6 +42,8 @@
     <Compile Include="Classes\AtrD.cs" />
     <Compile Include="Classes\Contexto.cs" />
     <Compile Include="Classes\Fases.cs" />
+    <Compile Include="Classes\Fruta.cs" />
+    <Compile Include="Classes\Plataforma.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Classes\Inimigos.cs" />
     <Compile Include="Program.cs" />
@@ -58,13 +60,17 @@
     <Content Include="Content\Algo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Chão.png">
+    <Content Include="Content\Chão1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Panda.jpg">
+    <Content Include="Content\Chão2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Pe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Per.png" />
+    <Content Include="Content\Fruta.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
