@@ -1,19 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Game1
 {
     class Personagem
     {
-        public int vida;
-        public int furia;
-        public bool atack = false;
-        public Rectangle Pers = new Rectangle();
         public Texture2D Texture;
 
         public Vector2 Velocity;
@@ -23,24 +19,15 @@ namespace Game1
 
         private Rectangle screenBound;
 
-        public bool isJumping; //Are we jumping or not
-        public bool goingUp; //If going up or not
+        public bool isJumping; //are we jumping or not
+        public bool goingUp; //if going up or not
 
-        public float u; //Initial velocity
+        public float u; //initial velocity
         private float jumpU;
-        private float g; //Gravity
-        public float t; //Time
+        private float g; //gravity
+        public float t; //time
 
-        private KeyboardState tecle;
-        private int p1;
-        private int p2;
-
-        public Texture2D Lycans { get; private set; }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Lycans, new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height), Color.White);
-        }
+        private KeyboardState prevKB;
 
         public Personagem(Texture2D Texture, Vector2 Position, float Speed, Rectangle screenBound)
         {
@@ -56,19 +43,14 @@ namespace Game1
             t = 0;
         }
 
-        public Personagem(int p1, int p2)
-        {
-            this.p1 = p1;
-            this.p2 = p2;
-        }
-
         public void Update(GameTime gameTime)
         {
             Position.X += (Velocity.X * Speed);
             //Set the Y position to be subtracted so that the upward movement would be done by decreasing the Y value
             Position.Y -= (Velocity.Y * Speed);
+
             goingUp = (Velocity.Y > 0);
-            
+
             if (isJumping == true)
             {
                 //Motion equation using velocity: v = u + at
@@ -105,16 +87,16 @@ namespace Game1
             }
         }
 
-        public void Entrada(KeyboardState keyState)
+        public void Input(KeyboardState keyState)
         {
-            if (keyState.IsKeyDown(Keys.W) && (isJumping == false || Position.Y == ground))
+            if (keyState.IsKeyDown(Keys.Space) && (isJumping == false || Position.Y == ground))
             {
                 isJumping = true;
                 u = jumpU;
             }
             if (keyState.IsKeyDown(Keys.A) && !keyState.IsKeyDown(Keys.D))
             {
-                if (keyState.IsKeyDown(Keys.D))
+                if (keyState.IsKeyDown(Keys.A))
                 {
                     if (Velocity.X > -2.0f)
                         Velocity.X -= (1.0f / 10);
@@ -151,14 +133,19 @@ namespace Game1
                 else
                     Velocity.X = 0;
             }
-            
-            tecle = keyState;
+
+            prevKB = keyState;
         }
 
         public void Fall()
         {
             t = 0;
             u = 0;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture, new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height), Color.White);
         }
     }
 }

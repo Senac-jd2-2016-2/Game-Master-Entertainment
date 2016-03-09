@@ -1,5 +1,4 @@
 ﻿using System;
-using Jumping;
 
 namespace Game1
 {
@@ -15,7 +14,7 @@ namespace Game1
         [STAThread]
         static void Main()
         {
-            using (var game = new Jumping.Game1())
+            using (var game = new Game1())
                 game.Run();
         }
     }

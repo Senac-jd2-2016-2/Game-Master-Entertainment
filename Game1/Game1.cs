@@ -7,23 +7,23 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Game1;
 
-namespace Jumping
+namespace Game1
 {
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        KeyboardState tecle;
+        KeyboardState prevKB;
 
-        Personagem Lycans;
-        List<Plataforma> Plats;
-        List<Fruta> Frutas;
+        Personagem Ball;
+        List<Plataforma> Blocks;
+        List<Fruta> Coins;
 
         List<char[,]> Levels = new List<char[,]>();
 
         int tileWidth, tileHeight;
+        int score;
         int currentLevel;
 
         public Game1()
@@ -38,8 +38,8 @@ namespace Jumping
 
         protected override void Initialize()
         {
-            Plats = new List<Plataforma>();
-            Frutas = new List<Fruta>();
+            Blocks = new List<Plataforma>();
+            Coins = new List<Fruta>();
 
             char[,] Level1 = {{'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
@@ -67,34 +67,37 @@ namespace Jumping
             Levels.Add(Level2);
 
             currentLevel = 0;
+            score = 0;
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D Sprite = Content.Load<Texture2D>("Pe");
-            Lycans = new Personagem(Sprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.graphics.PreferredBackBufferWidth, this.graphics.PreferredBackBufferHeight));
+            Texture2D ballSprite = Content.Load<Texture2D>("Player");
+            Ball = new Personagem(ballSprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.graphics.PreferredBackBufferWidth, this.graphics.PreferredBackBufferHeight));
 
             LoadLevel(currentLevel);
+
         }
 
         void LoadLevel(int level)
         {
-            Plats.Clear();
-            Frutas.Clear();
+            Blocks.Clear();
+            Coins.Clear();
 
-            Lycans.Position = Vector2.Zero;
+            Ball.Position = Vector2.Zero;
+
+            score = 0;
 
             tileWidth = Levels[level].GetLength(1);
             tileHeight = Levels[level].GetLength(0);
 
-            Texture2D blockSpriteA = Content.Load<Texture2D>("Chão1");
-            Texture2D blockSpriteB = Content.Load<Texture2D>("Chão2");
-            Texture2D Fruit = Content.Load<Texture2D>("Fruta");
+            Texture2D blockSpriteA = Content.Load<Texture2D>("blockA");
+            Texture2D blockSpriteB = Content.Load<Texture2D>("blockB");
+            Texture2D coin = Content.Load<Texture2D>("coin");
 
             for (int x = 0; x < tileWidth; x++)
             {
@@ -103,29 +106,29 @@ namespace Jumping
                     //Inpassable Blocks
                     if (Levels[level][y, x] == '#')
                     {
-                        Plats.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50), 1));
+                        Blocks.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50), 1));
                     }
                     //Blocks that are only passable if going up them
                     if (Levels[level][y, x] == '-')
                     {
-                        Plats.Add(new Plataforma(blockSpriteB, new Vector2(x * 50, y * 50), 2));
+                        Blocks.Add(new Plataforma(blockSpriteB, new Vector2(x * 50, y * 50), 2));
                     }
                     if (Levels[level][y, x] == 'C')
                     {
-                        Frutas.Add(new Fruta(Fruit, new Vector2(x * 50, y * 50), 50));
+                        Coins.Add(new Fruta(coin, new Vector2(x * 50, y * 50), 50));
                     }
-                    if (Levels[level][y, x] == 'P' && Lycans.Position == Vector2.Zero)
+                    if (Levels[level][y, x] == 'P' && Ball.Position == Vector2.Zero)
                     {
-                        Lycans.Position = new Vector2(x * 50, (y + 1) * 50 - Lycans.Texture.Height);
+                        Ball.Position = new Vector2(x * 50, (y + 1) * 50 - Ball.Texture.Height);
                     }
-                    else if (Levels[level][y, x] == 'P' && Lycans.Position != Vector2.Zero)
+                    else if (Levels[level][y, x] == 'P' && Ball.Position != Vector2.Zero)
                     {
                         throw new Exception("Only one 'P' is needed for each level");
                     }
                 }
             }
 
-            if (Lycans.Position == Vector2.Zero)
+            if (Ball.Position == Vector2.Zero)
             {
                 throw new Exception("Player Position needs to be set with 'P'");
             }
@@ -133,46 +136,46 @@ namespace Jumping
 
         protected override void UnloadContent()
         {
-
         }
 
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
+            //Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             HandleInput(Keyboard.GetState());
-            Lycans.Update(gameTime);
+            Ball.Update(gameTime);
 
-            foreach (Plataforma b in Plats)
+            foreach (Plataforma b in Blocks)
             {
-                Lycans = b.BlockCollision(Lycans);
+                Ball = b.BlockCollision(Ball);
             }
 
-            for (int i = Frutas.Count - 1; i >= 0; i--)
+            for (int i = Coins.Count - 1; i >= 0; i--)
             {
-                if (Frutas[i].isColliding(new Rectangle((int)Lycans.Position.X, (int)Lycans.Position.Y, Lycans.Texture.Width, Lycans.Texture.Height)))
+                if (Coins[i].isColliding(new Rectangle((int)Ball.Position.X, (int)Ball.Position.Y, Ball.Texture.Width, Ball.Texture.Height)))
                 {
-                    Frutas.RemoveAt(i);
+                    score += Coins[i].score;
+                    Coins.RemoveAt(i);
                 }
             }
 
-            tecle = Keyboard.GetState();
+            prevKB = Keyboard.GetState();
 
             base.Update(gameTime);
         }
 
         void HandleInput(KeyboardState keyState)
         {
-            Lycans.Entrada(keyState);
-            if (tecle.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
+            Ball.Input(keyState);
+            if (prevKB.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
             {
                 this.graphics.ToggleFullScreen();
                 this.graphics.ApplyChanges();
             }
 
-            if (tecle.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
+            if (prevKB.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
             {
                 currentLevel = (currentLevel + 1) % Levels.Count;
                 LoadLevel(currentLevel);
@@ -184,16 +187,16 @@ namespace Jumping
             GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin();
-
-            foreach (Plataforma b in Plats)
+            foreach (Plataforma b in Blocks)
             {
                 b.Draw(spriteBatch);
             }
-            foreach (Fruta c in Frutas)
+            foreach (Fruta c in Coins)
             {
                 c.Draw(spriteBatch);
             }
-            
+
+            Ball.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }

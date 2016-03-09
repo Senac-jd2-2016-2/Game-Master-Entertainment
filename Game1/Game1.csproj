@@ -39,13 +39,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\Personagem.cs" />
-    <Compile Include="Classes\AtrD.cs" />
-    <Compile Include="Classes\Contexto.cs" />
-    <Compile Include="Classes\Fases.cs" />
     <Compile Include="Classes\Fruta.cs" />
     <Compile Include="Classes\Plataforma.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Classes\Inimigos.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,20 +53,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Algo.jpg">
+    <Content Include="Content\blockA.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Chão1.png">
+    <Content Include="Content\blockB.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Chão2.png">
+    <Content Include="Content\coin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Pe.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Per.png" />
-    <Content Include="Content\Fruta.png">
+    <Content Include="Content\Player.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
