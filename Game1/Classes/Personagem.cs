@@ -11,11 +11,8 @@ namespace Game1
     class Personagem
     {
         public Texture2D Texture;
-
         public Vector2 Velocity;
         public Vector2 Position;
-        public float ground;
-        private float Speed;
 
         private Rectangle screenBound;
 
@@ -26,6 +23,8 @@ namespace Game1
         private float jumpU;
         private float g; //gravity
         public float t; //time
+        public float ground;
+        private float Speed;
 
         private KeyboardState prevKB;
 
@@ -48,7 +47,6 @@ namespace Game1
             Position.X += (Velocity.X * Speed);
             //Set the Y position to be subtracted so that the upward movement would be done by decreasing the Y value
             Position.Y -= (Velocity.Y * Speed);
-
             goingUp = (Velocity.Y > 0);
 
             if (isJumping == true)
