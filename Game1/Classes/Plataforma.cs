@@ -10,80 +10,80 @@ namespace Game1
     class Plataforma
     {
         Texture2D Texture;
-        Vector2 Position;
+        Vector2 Posicao;
         int BlockState;
 
         public Plataforma(Texture2D Texture, Vector2 Position, int BlockState)
         {
             this.Texture = Texture;
-            this.Position = Position;
+            this.Posicao = Position;
             this.BlockState = BlockState;
         }
 
-        public Personagem BlockCollision(Personagem player)
+        public Personagem BlockCollision(Personagem personagem)
         {
-            Rectangle top = new Rectangle((int)Position.X + 5, (int)Position.Y - 10, Texture.Width - 10, 10);
-            Rectangle bottom = new Rectangle((int)Position.X + 5, (int)Position.Y + Texture.Height, Texture.Width - 10, 10);
-            Rectangle left = new Rectangle((int)Position.X - 10, (int)Position.Y + 5, 10, Texture.Height - 10);
-            Rectangle right = new Rectangle((int)Position.X + Texture.Width, (int)Position.Y + 5, 10, Texture.Height - 10);
+            Rectangle Topo = new Rectangle((int)Posicao.X + 5, (int)Posicao.Y - 10, Texture.Width - 10, 10);
+            Rectangle Botao = new Rectangle((int)Posicao.X + 5, (int)Posicao.Y + Texture.Height, Texture.Width - 10, 10);
+            Rectangle Esquerda = new Rectangle((int)Posicao.X - 10, (int)Posicao.Y + 5, 10, Texture.Height - 10);
+            Rectangle Direita = new Rectangle((int)Posicao.X + Texture.Width, (int)Posicao.Y + 5, 10, Texture.Height - 10);
 
-            if (BlockState != 2 || (BlockState == 2 && !player.goingUp))
+            if (BlockState != 2 || (BlockState == 2 && !personagem.Cima))
             {
-                if (top.Intersects(new Rectangle((int)player.Position.X, (int)player.Position.Y, player.Texture.Width, player.Texture.Height)))
+                if (Topo.Intersects(new Rectangle((int)personagem.Posicao.X, (int)personagem.Posicao.Y, personagem.Texture.Width, personagem.Texture.Height)))
                 {
-                    if (player.Position.Y + player.Texture.Height > Position.Y && player.Position.Y + player.Texture.Height < Position.Y + Texture.Height / 2)
+                    if (personagem.Posicao.Y + personagem.Texture.Height > Posicao.Y && personagem.Posicao.Y + personagem.Texture.Height < Posicao.Y + Texture.Height / 2)
                     {
-                        player.Position.Y = player.ground = Position.Y - player.Texture.Height;
-                        player.Velocity.Y = 0;
-                        player.isJumping = false;
-                        player.t = 0;
+                        personagem.Posicao.Y = personagem.ground = Posicao.Y - personagem.Texture.Height;
+                        personagem.Velocidade.Y = 0;
+                        personagem.Pulando = false;
+                        personagem.t = 0;
                     }
 
                 }
-                else if (player.isJumping == false && player.ground == Position.Y - player.Texture.Height)
+                else if (personagem.Pulando == false && personagem.ground == Posicao.Y - personagem.Texture.Height)
                 {
-                    player.isJumping = true;
-                    player.u = 0;
+                    personagem.Pulando = true;
+                    personagem.u = 0;
                 }
 
                 if (BlockState != 2)
                 {
-                    if (bottom.Intersects(new Rectangle((int)player.Position.X, (int)player.Position.Y, player.Texture.Width, player.Texture.Height)))
+                    if (Botao.Intersects(new Rectangle((int)personagem.Posicao.X, (int)personagem.Posicao.Y, personagem.Texture.Width, personagem.Texture.Height)))
                     {
-                        if (player.Position.Y < Position.Y + Texture.Height)
+                        if (personagem.Posicao.Y < Posicao.Y + Texture.Height)
                         {
-                            player.Position.Y = Position.Y + Texture.Height;
-                            player.t = 0;
-                            player.u = 0;
+                            personagem.Posicao.Y = Posicao.Y + Texture.Height;
+                            personagem.t = 0;
+                            personagem.u = 0;
                         }
 
                     }
 
-                    if (left.Intersects(new Rectangle((int)player.Position.X, (int)player.Position.Y, player.Texture.Width, player.Texture.Height)))
+                    if (Esquerda.Intersects(new Rectangle((int)personagem.Posicao.X, (int)personagem.Posicao.Y, personagem.Texture.Width, personagem.Texture.Height)))
                     {
-                        if (player.Position.X + player.Texture.Width > Position.X)
+                        if (personagem.Posicao.X + personagem.Texture.Width > Posicao.X)
                         {
-                            player.Position.X = Position.X - player.Texture.Width;
-                            player.Velocity.X = 0;
+                            personagem.Posicao.X = Posicao.X - personagem.Texture.Width;
+                            personagem.Velocidade.X = 0;
                         }
                     }
 
-                    if (right.Intersects(new Rectangle((int)player.Position.X, (int)player.Position.Y, player.Texture.Width, player.Texture.Height)))
+                    if (Direita.Intersects(new Rectangle((int)personagem.Posicao.X, (int)personagem.Posicao.Y, personagem.Texture.Width, personagem.Texture.Height)))
                     {
-                        if (player.Position.X < Position.X + Texture.Width)
+                        if (personagem.Posicao.X < Posicao.X + Texture.Width)
                         {
-                            player.Position.X = Position.X + Texture.Width;
-                            player.Velocity.X = 0;
+                            personagem.Posicao.X = Posicao.X + Texture.Width;
+                            personagem.Velocidade.X = 0;
                         }
                     }
                 }
             }
-            return player;
+            return personagem;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height), Color.White);
+            spriteBatch.Draw(Texture, new Rectangle((int)Posicao.X, (int)Posicao.Y, Texture.Width, Texture.Height), Color.White);
         }
     }
 }

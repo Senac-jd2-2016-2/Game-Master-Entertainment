@@ -12,72 +12,70 @@ namespace Game1
 {
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        GraphicsDeviceManager Graficos;
         SpriteBatch spriteBatch;
         KeyboardState prevKB;
 
-        Personagem Ball;
+        Personagem Lycans;
         List<Plataforma> Blocks;
-        List<Fruta> Coins;
+        List<Fruta> Frutas;
 
         List<char[,]> Levels = new List<char[,]>();
 
         int tileWidth, tileHeight;
-        int score;
         int currentLevel;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graficos = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            this.graphics.PreferredBackBufferWidth = 1200;
-            this.graphics.PreferredBackBufferHeight = 750;
-            this.graphics.ApplyChanges();
+            this.Graficos.PreferredBackBufferWidth = 1200;
+            this.Graficos.PreferredBackBufferHeight = 750;
+            this.Graficos.ApplyChanges();
         }
 
         protected override void Initialize()
         {
             Blocks = new List<Plataforma>();
-            Coins = new List<Fruta>();
+            Frutas = new List<Fruta>();
 
             char[,] Level1 = {{'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','.','.','.','.','.','.','.','.','C','.','.','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','.','.','.','.','.','.','.','.','.','F','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','C','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','-','-','-','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'C','.','.','.','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'#','#','.','P','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'}};
+                              {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','.','F','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','-','-','-','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'C','.','.','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'#','#','P','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'#','#','#','#','#','#','#','#','.','.','.','.','#','#','#','#','#','#','#','#','#','#','#','#'}};
 
             char[,] Level2 = {{'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','.','.','.','.','.','.','.','.','C','.','.','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','.','.','.','.','.','.','.','.','.','F','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','-','-','.','.','-','-','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
                               {'-','-','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','.','.','C','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','.','.','.','F','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','-','-','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
-                              {'C','.','.','.','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'-','-','.','.','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','C','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'.','.','.','.','-','-','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'C','.','.','.','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'#','#','.','P','.','.','.','.','.','.','.','.','#','.','C','.','.','.','.','.','.','.','.','.'},
-                              {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'}};
+                              {'C','.','.','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'-','-','.','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','.','F','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'.','.','.','.','-','-','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'C','.','.','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'#','#','.','P','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
+                              {'#','#','#','#','#','#','#','#','.','.','.','.','#','#','#','#','#','#','#','#','#','#','#','#'}};
 
             Levels.Add(Level1);
             Levels.Add(Level2);
 
             currentLevel = 0;
-            score = 0;
 
             base.Initialize();
         }
@@ -87,7 +85,7 @@ namespace Game1
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D ballSprite = Content.Load<Texture2D>("Player");
-            Ball = new Personagem(ballSprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.graphics.PreferredBackBufferWidth, this.graphics.PreferredBackBufferHeight));
+            Lycans = new Personagem(ballSprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.Graficos.PreferredBackBufferWidth, this.Graficos.PreferredBackBufferHeight));
 
             LoadLevel(currentLevel);
 
@@ -96,11 +94,9 @@ namespace Game1
         void LoadLevel(int level)
         {
             Blocks.Clear();
-            Coins.Clear();
+            Frutas.Clear();
 
-            Ball.Position = Vector2.Zero;
-
-            score = 0;
+            Lycans.Posicao = Vector2.Zero;
 
             tileWidth = Levels[level].GetLength(1);
             tileHeight = Levels[level].GetLength(0);
@@ -114,31 +110,31 @@ namespace Game1
                 for (int y = 0; y < tileHeight; y++)
                 {
                     //Inpassable Blocks
-                    if (Levels[level][y, x] == '#')
+                    if (Levels[level][y, x] == '#') //Verde
                     {
                         Blocks.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50), 1));
                     }
                     //Blocks that are only passable if going up them
-                    if (Levels[level][y, x] == '-')
+                    if (Levels[level][y, x] == '-') //Marrom
                     {
                         Blocks.Add(new Plataforma(blockSpriteB, new Vector2(x * 50, y * 50), 2));
                     }
-                    if (Levels[level][y, x] == 'C')
+                    if (Levels[level][y, x] == 'F') //Fruta
                     {
-                        Coins.Add(new Fruta(coin, new Vector2(x * 50, y * 50), 50));
+                        Frutas.Add(new Fruta(coin, new Vector2(x * 50, y * 50), 50));
                     }
-                    if (Levels[level][y, x] == 'P' && Ball.Position == Vector2.Zero)
+                    if (Levels[level][y, x] == 'P' && Lycans.Posicao == Vector2.Zero)
                     {
-                        Ball.Position = new Vector2(x * 50, (y + 1) * 50 - Ball.Texture.Height);
+                        Lycans.Posicao = new Vector2(x * 50, (y + 1) * 50 - Lycans.Texture.Height);
                     }
-                    else if (Levels[level][y, x] == 'P' && Ball.Position != Vector2.Zero)
+                    else if (Levels[level][y, x] == 'P' && Lycans.Posicao != Vector2.Zero)
                     {
                         throw new Exception("Only one 'P' is needed for each level");
                     }
                 }
             }
 
-            if (Ball.Position == Vector2.Zero)
+            if (Lycans.Posicao == Vector2.Zero)
             {
                 throw new Exception("Player Position needs to be set with 'P'");
             }
@@ -155,19 +151,18 @@ namespace Game1
                 this.Exit();
 
             HandleInput(Keyboard.GetState());
-            Ball.Update(gameTime);
+            Lycans.Update(gameTime);
 
             foreach (Plataforma b in Blocks)
             {
-                Ball = b.BlockCollision(Ball);
+                Lycans = b.BlockCollision(Lycans);
             }
 
-            for (int i = Coins.Count - 1; i >= 0; i--)
+            for (int i = Frutas.Count - 1; i >= 0; i--)
             {
-                if (Coins[i].isColliding(new Rectangle((int)Ball.Position.X, (int)Ball.Position.Y, Ball.Texture.Width, Ball.Texture.Height)))
+                if (Frutas[i].isColliding(new Rectangle((int)Lycans.Posicao.X, (int)Lycans.Posicao.Y, Lycans.Texture.Width, Lycans.Texture.Height)))
                 {
-                    score += Coins[i].score;
-                    Coins.RemoveAt(i);
+                    Frutas.RemoveAt(i);
                 }
             }
 
@@ -178,11 +173,11 @@ namespace Game1
 
         void HandleInput(KeyboardState keyState)
         {
-            Ball.Input(keyState);
+            Lycans.Entrada(keyState);
             if (prevKB.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
             {
-                this.graphics.ToggleFullScreen();
-                this.graphics.ApplyChanges();
+                this.Graficos.ToggleFullScreen();
+                this.Graficos.ApplyChanges();
             }
 
             if (prevKB.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
@@ -194,19 +189,19 @@ namespace Game1
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Bisque);
+            GraphicsDevice.Clear(Color.AliceBlue);
 
             spriteBatch.Begin();
             foreach (Plataforma b in Blocks)
             {
                 b.Draw(spriteBatch);
             }
-            foreach (Fruta c in Coins)
+            foreach (Fruta c in Frutas)
             {
                 c.Draw(spriteBatch);
             }
 
-            Ball.Draw(spriteBatch);
+            Lycans.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }

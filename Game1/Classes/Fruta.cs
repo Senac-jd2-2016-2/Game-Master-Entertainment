@@ -11,13 +11,11 @@ namespace Game1
     {
         Texture2D Texture;
         Rectangle Position;
-        public int score;
 
         public Fruta(Texture2D Texture, Vector2 position, int score)
         {
             this.Texture = Texture;
             Position = new Rectangle((int)position.X, (int)position.Y, Texture.Width, Texture.Height);
-            this.score = score;
         }
 
         public bool isColliding(Rectangle otherBox)
