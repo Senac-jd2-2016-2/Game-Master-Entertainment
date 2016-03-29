@@ -96,7 +96,7 @@ namespace Game1
             Blocks.Clear();
             Frutas.Clear();
 
-            Lycans.Posicao = Vector2.Zero;
+            Lycans.posicao = Vector2.Zero;
 
             tileWidth = Levels[level].GetLength(1);
             tileHeight = Levels[level].GetLength(0);
@@ -123,18 +123,18 @@ namespace Game1
                     {
                         Frutas.Add(new Fruta(coin, new Vector2(x * 50, y * 50), 50));
                     }
-                    if (Levels[level][y, x] == 'P' && Lycans.Posicao == Vector2.Zero)
+                    if (Levels[level][y, x] == 'P' && Lycans.posicao == Vector2.Zero)
                     {
-                        Lycans.Posicao = new Vector2(x * 50, (y + 1) * 50 - Lycans.Texture.Height);
+                        Lycans.posicao = new Vector2(x * 50, (y + 1) * 50 - Lycans.texture.Height);
                     }
-                    else if (Levels[level][y, x] == 'P' && Lycans.Posicao != Vector2.Zero)
+                    else if (Levels[level][y, x] == 'P' && Lycans.posicao != Vector2.Zero)
                     {
                         throw new Exception("Only one 'P' is needed for each level");
                     }
                 }
             }
 
-            if (Lycans.Posicao == Vector2.Zero)
+            if (Lycans.posicao == Vector2.Zero)
             {
                 throw new Exception("Player Position needs to be set with 'P'");
             }
@@ -155,12 +155,12 @@ namespace Game1
 
             foreach (Plataforma b in Blocks)
             {
-                Lycans = b.BlockCollision(Lycans);
+                Lycans = b.ColisaoBloco(Lycans);
             }
 
             for (int i = Frutas.Count - 1; i >= 0; i--)
             {
-                if (Frutas[i].isColliding(new Rectangle((int)Lycans.Posicao.X, (int)Lycans.Posicao.Y, Lycans.Texture.Width, Lycans.Texture.Height)))
+                if (Frutas[i].colidindo(new Rectangle((int)Lycans.posicao.X, (int)Lycans.posicao.Y, Lycans.texture.Width, Lycans.texture.Height)))
                 {
                     Frutas.RemoveAt(i);
                 }

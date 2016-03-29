@@ -9,23 +9,23 @@ namespace Game1
 {
     class Fruta
     {
-        Texture2D Texture;
-        Rectangle Position;
+        Texture2D texture;
+        Rectangle posicao;
 
-        public Fruta(Texture2D Texture, Vector2 position, int score)
+        public Fruta(Texture2D Texture, Vector2 Posicao)
         {
-            this.Texture = Texture;
-            Position = new Rectangle((int)position.X, (int)position.Y, Texture.Width, Texture.Height);
+            this.texture = Texture;
+            posicao = new Rectangle((int)Posicao.X, (int)Posicao.Y, Texture.Width, Texture.Height);
         }
 
-        public bool isColliding(Rectangle otherBox)
+        public bool colidindo(Rectangle outracaixa)
         {
-            return Position.Intersects(otherBox);
+            return posicao.Intersects(outracaixa);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            spriteBatch.Draw(texture, posicao, Color.White);
         }
     }
 }
