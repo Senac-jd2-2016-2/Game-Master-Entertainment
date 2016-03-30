@@ -14,6 +14,7 @@ namespace Game1
     {
         GraphicsDeviceManager Graficos;
         SpriteBatch spriteBatch;
+        SpriteFont font;
         KeyboardState prevKB;
 
         Personagem Lycans;
@@ -22,8 +23,8 @@ namespace Game1
 
         List<char[,]> Levels = new List<char[,]>();
 
-        int tileWidth, tileHeight;
-        int currentLevel;
+        public int tileWidth, tileHeight;
+        public int currentLevel;
 
         public Game1()
         {
@@ -40,7 +41,7 @@ namespace Game1
             Blocks = new List<Plataforma>();
             Frutas = new List<Fruta>();
 
-            char[,] Level1 = {{'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
+            char[,] Level1 = {{'F','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','F','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
@@ -56,7 +57,7 @@ namespace Game1
                               {'#','#','P','.','.','.','.','.','.','.','.','.','#','.','F','.','.','.','.','.','.','.','.','.'},
                               {'#','#','#','#','#','#','#','#','.','.','.','.','#','#','#','#','#','#','#','#','#','#','#','#'}};
 
-            char[,] Level2 = {{'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
+            char[,] Level2 = {{'F','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','F','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','-','-','.','.','-','-','.','.','#','.','.','.','.','.','.','.','.','.','.','.'},
@@ -83,6 +84,7 @@ namespace Game1
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            font = Content.Load<SpriteFont>("font");
 
             Texture2D ballSprite = Content.Load<Texture2D>("Player");
             Lycans = new Personagem(ballSprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.Graficos.PreferredBackBufferWidth, this.Graficos.PreferredBackBufferHeight));
@@ -91,7 +93,7 @@ namespace Game1
 
         }
 
-        void LoadLevel(int level)
+        public void LoadLevel(int level)
         {
             Blocks.Clear();
             Frutas.Clear();
@@ -110,7 +112,7 @@ namespace Game1
                 for (int y = 0; y < tileHeight; y++)
                 {
                     //Inpassable Blocks
-                    if (Levels[level][y, x] == '#') //Verde
+                    if (Levels[level][y, x] == '#') //Verde 
                     {
                         Blocks.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50), 1));
                     }
@@ -165,7 +167,6 @@ namespace Game1
                     Frutas.RemoveAt(i);
                 }
             }
-
             prevKB = Keyboard.GetState();
 
             base.Update(gameTime);
@@ -202,6 +203,7 @@ namespace Game1
             }
 
             Lycans.Draw(spriteBatch);
+            spriteBatch.DrawString(font, ": ", new Vector2(27, 6), Color.Black);
             spriteBatch.End();
             base.Draw(gameTime);
         }

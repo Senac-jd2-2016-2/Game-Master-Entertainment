@@ -12,7 +12,7 @@ namespace Game1
         Texture2D texture;
         Rectangle posicao;
 
-        public Fruta(Texture2D Texture, Vector2 Posicao)
+        public Fruta(Texture2D Texture, Vector2 Posicao, int score)
         {
             this.texture = Texture;
             posicao = new Rectangle((int)Posicao.X, (int)Posicao.Y, Texture.Width, Texture.Height);
