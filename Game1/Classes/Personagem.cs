@@ -5,14 +5,13 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Game1.Framework;
 
 namespace Game1
 {
-    class Personagem
+    public class Personagem : GameObject
     {
-        public Texture2D texture;
         public Vector2 velocidade;
-        public Vector2 posicao;
 
         private Rectangle screenBound;
         private KeyboardState tecla;
@@ -41,8 +40,10 @@ namespace Game1
             tempo = 0;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
+            Entrada(Keyboard.GetState());
+
             posicao.X += (velocidade.X * Speed);
             posicao.Y -= (velocidade.Y * Speed);
             cima = (velocidade.Y > 0);
@@ -134,9 +135,5 @@ namespace Game1
             VeloInicial = 0;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(texture, new Rectangle((int)posicao.X, (int)posicao.Y, texture.Width, texture.Height), Color.White);
-        }
     }
 }

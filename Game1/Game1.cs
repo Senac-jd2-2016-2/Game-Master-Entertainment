@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Game1.Framework;
 
 namespace Game1
 {
@@ -16,9 +17,10 @@ namespace Game1
         SpriteBatch spriteBatch;
         KeyboardState prevKB;
 
-        Personagem Lycans;
         List<Plataforma> Blocks;
         List<Fruta> Frutas;
+
+        private Cenario cenario = new Cenario();
 
         List<char[,]> Levels = new List<char[,]>();
 
@@ -85,13 +87,15 @@ namespace Game1
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D ballSprite = Content.Load<Texture2D>("Player");
-            Lycans = new Personagem(ballSprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.Graficos.PreferredBackBufferWidth, this.Graficos.PreferredBackBufferHeight));
+            Personagem Lycans = new Personagem(ballSprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.Graficos.PreferredBackBufferWidth, this.Graficos.PreferredBackBufferHeight));
 
-            LoadLevel(currentLevel);
+            cenario.AddGameObject(Lycans);
+
+            LoadLevel(currentLevel, Lycans);
 
         }
 
-        public void LoadLevel(int level)
+        public void LoadLevel(int level, Personagem Lycans)
         {
             Blocks.Clear();
             Frutas.Clear();
@@ -151,19 +155,20 @@ namespace Game1
                 this.Exit();
 
             HandleInput(Keyboard.GetState());
-            Lycans.Update(gameTime);
+            cenario.Update(gameTime);
+            //Lycans.Update(gameTime);
 
             foreach (Plataforma b in Blocks)
             {
-                Lycans = b.ColisaoBloco(Lycans);
+                //Lycans = b.ColisaoBloco(Lycans);
             }
 
             for (int i = Frutas.Count - 1; i >= 0; i--)
             {
-                if (Frutas[i].colidindo(new Rectangle((int)Lycans.posicao.X, (int)Lycans.posicao.Y, Lycans.texture.Width, Lycans.texture.Height)))
-                {
-                    Frutas.RemoveAt(i);
-                }
+                //if (Frutas[i].colidindo(new Rectangle((int)Lycans.posicao.X, (int)Lycans.posicao.Y, Lycans.texture.Width, Lycans.texture.Height)))
+                //{
+                //    Frutas.RemoveAt(i);
+                //}
             }
             prevKB = Keyboard.GetState();
 
@@ -172,18 +177,18 @@ namespace Game1
 
         void HandleInput(KeyboardState keyState)
         {
-            Lycans.Entrada(keyState);
-            if (prevKB.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
-            {
-                this.Graficos.ToggleFullScreen();
-                this.Graficos.ApplyChanges();
-            }
+            //Lycans.Entrada(keyState);
+            //if (prevKB.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
+            //{
+            //    this.Graficos.ToggleFullScreen();
+            //    this.Graficos.ApplyChanges();
+            //}
 
-            if (prevKB.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
-            {
-                currentLevel = (currentLevel + 1) % Levels.Count;
-                LoadLevel(currentLevel);
-            }
+            //if (prevKB.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
+            //{
+            //    currentLevel = (currentLevel + 1) % Levels.Count;
+            //    LoadLevel(currentLevel);
+            //}
         }
 
         protected override void Draw(GameTime gameTime)
@@ -200,7 +205,8 @@ namespace Game1
                 c.Draw(spriteBatch);
             }
 
-            Lycans.Draw(spriteBatch);
+            cenario.Draw(spriteBatch);           
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }
