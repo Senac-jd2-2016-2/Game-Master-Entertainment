@@ -135,5 +135,17 @@ namespace Game1
             VeloInicial = 0;
         }
 
+        public override void Colidir(Cenario cenario, GameObject obj, Posicao posicao)
+        {
+            if (obj is Fruta)
+            {
+                cenario.RemoveGameObject(obj);
+            }
+            if (obj is Plataforma)
+            {
+                cenario.(obj);
+            }
+        }
+
     }
 }

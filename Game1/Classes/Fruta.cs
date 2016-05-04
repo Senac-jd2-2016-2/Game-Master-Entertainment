@@ -4,23 +4,23 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Game1.Framework;
 
 namespace Game1
 {
-    class Fruta
+    public class Fruta : GameObject
     {
-        Texture2D texture;
-        Rectangle posicao;
 
         public Fruta(Texture2D Texture, Vector2 Posicao, int score)
         {
             this.texture = Texture;
-            posicao = new Rectangle((int)Posicao.X, (int)Posicao.Y, Texture.Width, Texture.Height);
+            this.posicao = Posicao;
         }
 
         public bool colidindo(Rectangle outracaixa)
         {
-            return posicao.Intersects(outracaixa);
+            //return posicao.Intersects(outracaixa);
+            return false;
         }
 
         public void Draw(SpriteBatch spriteBatch)

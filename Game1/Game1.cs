@@ -18,7 +18,7 @@ namespace Game1
         KeyboardState prevKB;
 
         List<Plataforma> Blocks;
-        List<Fruta> Frutas;
+        //List<Fruta> Frutas;
 
         private Cenario cenario = new Cenario();
 
@@ -39,8 +39,7 @@ namespace Game1
 
         protected override void Initialize()
         {
-            Blocks = new List<Plataforma>();
-            Frutas = new List<Fruta>();
+          
 
             char[,] Level1 = {{'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
                               {'.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'},
@@ -91,11 +90,20 @@ namespace Game1
 
             cenario.AddGameObject(Lycans);
 
-            LoadLevel(currentLevel, Lycans);
+            List<Fruta> Frutas = new List<Fruta>();
+            List<Plataforma> Blocks = new List<Plataforma>();
+            LoadLevel(currentLevel, Lycans, Frutas ,Blocks);
 
+            foreach(Fruta f in Frutas){
+                cenario.AddGameObject(f);
+            }
+            foreach (Plataforma b in Blocks)
+            {
+                cenario.AddGameObject(b);
+            }
         }
 
-        public void LoadLevel(int level, Personagem Lycans)
+        public void LoadLevel(int level, Personagem Lycans, List<Fruta> Frutas, List<Plataforma> Blocks)
         {
             Blocks.Clear();
             Frutas.Clear();
@@ -116,12 +124,12 @@ namespace Game1
                     //Inpassable Blocks
                     if (Levels[level][y, x] == '#') //Verde 
                     {
-                        Blocks.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50), 1));
+                        Blocks.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50)));
                     }
                     //Blocks that are only passable if going up them
                     if (Levels[level][y, x] == '-') //Marrom
                     {
-                        Blocks.Add(new Plataforma(blockSpriteB, new Vector2(x * 50, y * 50), 2));
+                        Blocks.Add(new Plataforma(blockSpriteB, new Vector2(x * 50, y * 50)));
                     }
                     if (Levels[level][y, x] == 'F') //Fruta
                     {
@@ -158,19 +166,19 @@ namespace Game1
             cenario.Update(gameTime);
             //Lycans.Update(gameTime);
 
-            foreach (Plataforma b in Blocks)
-            {
+            //foreach (Plataforma b in Blocks)
+            //{
                 //Lycans = b.ColisaoBloco(Lycans);
-            }
+            //}
 
-            for (int i = Frutas.Count - 1; i >= 0; i--)
-            {
-                //if (Frutas[i].colidindo(new Rectangle((int)Lycans.posicao.X, (int)Lycans.posicao.Y, Lycans.texture.Width, Lycans.texture.Height)))
-                //{
-                //    Frutas.RemoveAt(i);
-                //}
-            }
-            prevKB = Keyboard.GetState();
+            //for (int i = Frutas.Count - 1; i >= 0; i--)
+            //{
+            //    if (Frutas[i].colidindo(new Rectangle((int)Lycans.posicao.X, (int)Lycans.posicao.Y, Lycans.texture.Width, Lycans.texture.Height)))
+            //    {
+            //        Frutas.RemoveAt(i);
+            //    }
+            //}
+            //prevKB = Keyboard.GetState();
 
             base.Update(gameTime);
         }
@@ -196,14 +204,7 @@ namespace Game1
             GraphicsDevice.Clear(Color.AliceBlue);
 
             spriteBatch.Begin();
-            foreach (Plataforma b in Blocks)
-            {
-                b.Draw(spriteBatch);
-            }
-            foreach (Fruta c in Frutas)
-            {
-                c.Draw(spriteBatch);
-            }
+           
 
             cenario.Draw(spriteBatch);           
             
