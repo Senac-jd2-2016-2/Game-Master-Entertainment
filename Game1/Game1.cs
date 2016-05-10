@@ -88,7 +88,6 @@ namespace Game1
             Texture2D ballSprite = Content.Load<Texture2D>("Player");
             Personagem Lycans = new Personagem(ballSprite, Vector2.Zero, 6.0f, new Rectangle(0, 0, this.Graficos.PreferredBackBufferWidth, this.Graficos.PreferredBackBufferHeight));
 
-            cenario.AddGameObject(Lycans);
 
             List<Fruta> Frutas = new List<Fruta>();
             List<Plataforma> Blocks = new List<Plataforma>();
@@ -101,6 +100,7 @@ namespace Game1
             {
                 cenario.AddGameObject(b);
             }
+            cenario.AddGameObject(Lycans);
         }
 
         public void LoadLevel(int level, Personagem Lycans, List<Fruta> Frutas, List<Plataforma> Blocks)
@@ -124,12 +124,12 @@ namespace Game1
                     //Inpassable Blocks
                     if (Levels[level][y, x] == '#') //Verde 
                     {
-                        Blocks.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50)));
+                        Blocks.Add(new Plataforma(blockSpriteA, new Vector2(x * 50, y * 50),1));
                     }
                     //Blocks that are only passable if going up them
                     if (Levels[level][y, x] == '-') //Marrom
                     {
-                        Blocks.Add(new Plataforma(blockSpriteB, new Vector2(x * 50, y * 50)));
+                        Blocks.Add(new Plataforma(blockSpriteB, new Vector2(x * 50, y * 50),2));
                     }
                     if (Levels[level][y, x] == 'F') //Fruta
                     {
@@ -162,7 +162,7 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            HandleInput(Keyboard.GetState());
+            //HandleInput(Keyboard.GetState());
             cenario.Update(gameTime);
             //Lycans.Update(gameTime);
 

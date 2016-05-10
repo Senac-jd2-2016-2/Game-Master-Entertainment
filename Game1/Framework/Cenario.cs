@@ -75,19 +75,23 @@ namespace Game1.Framework
                     if (TouchTopOf(rectObj1, rectObj2))
                     {
                         obj1.Colidir(this, obj2, Posicao.CIMA);
+                        obj2.Colidir(this, obj1, Posicao.BAIXO);
                     }
 
                     if (TouchLeftOf(rectObj1, rectObj2))
                     {
                         obj1.Colidir(this, obj2, Posicao.ESQUERDA);
+                        obj2.Colidir(this, obj1, Posicao.DIREITA);
                     }
                     if (TouchRightOf(rectObj1, rectObj2))
                     {
                         obj1.Colidir(this, obj2, Posicao.DIREITA);
+                        obj2.Colidir(this, obj1, Posicao.ESQUERDA);
                     }
                     if (TouchBottomOf(rectObj1, rectObj2))
                     {
                         obj1.Colidir(this, obj2, Posicao.BAIXO);
+                        obj2.Colidir(this, obj1, Posicao.CIMA);
                     }
                 }
             }
@@ -101,7 +105,7 @@ namespace Game1.Framework
             detectarColisao();
         }
 
-        private Rectangle getGameObjectRectangle(GameObject go)
+        public Rectangle getGameObjectRectangle(GameObject go)
         {
             return new Rectangle((int)go.posicao.X, (int)go.posicao.Y, go.texture.Width, go.texture.Height);
         }

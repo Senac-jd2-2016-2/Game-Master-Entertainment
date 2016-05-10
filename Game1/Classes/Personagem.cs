@@ -84,6 +84,7 @@ namespace Game1
             if (keyState.IsKeyDown(Keys.Space) && (pulando == false || posicao.Y == personagemchao))
             {
                 pulando = true;
+                posicao.Y -= 1;
                 VeloInicial = jumpU;
             }
             if (keyState.IsKeyDown(Keys.A) && !keyState.IsKeyDown(Keys.D))
@@ -135,16 +136,19 @@ namespace Game1
             VeloInicial = 0;
         }
 
-        public override void Colidir(Cenario cenario, GameObject obj, Posicao posicao)
+        public override void Colidir(Cenario cenario, GameObject obj, Posicao posicaoObj)
         {
             if (obj is Fruta)
             {
                 cenario.RemoveGameObject(obj);
             }
-            if (obj is Plataforma)
+            if (obj is Plataforma && cenario.getGameObjectRectangle(this).Bottom < cenario.getGameObjectRectangle(obj).Top)
             {
-                cenario.(obj);
+                this.velocidade.Y = 0;
+                pulando = false;
+                tempo = 0;
             }
+
         }
 
     }
