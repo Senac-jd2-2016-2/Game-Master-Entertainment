@@ -12,129 +12,82 @@ namespace Game1
     public class Personagem : GameObject
     {
         public Vector2 velocidade;
-
         private Rectangle screenBound;
-        private KeyboardState tecla;
+        private bool caindo;
+        private bool pulando;
+        private float alturaPulo;
+        private Vector2 posicaoInicial;
 
-        public bool pulando;
-        public bool cima;
-
-        public float VeloInicial;
-        private float jumpU;
-        private float gravidade;
-        public float tempo;
-        public float personagemchao;
-        private float Speed;
-
-        public Personagem(Texture2D Texture, Vector2 Posicao, float Speed, Rectangle screenBound)
+        public Personagem(Texture2D Texture, Vector2 Posicao, Rectangle screenBound)
         {
             this.texture = Texture;
             this.posicao = Posicao;
-            personagemchao = Posicao.Y;
-            this.Speed = Speed;
+            this.posicaoInicial = Posicao;
             this.screenBound = screenBound;
-            velocidade = Vector2.Zero;
-            pulando = cima = false;
-            jumpU = 2.5f;
-            gravidade = -9.8f;
-            tempo = 0;
         }
 
         public override void Update(GameTime gameTime)
         {
-            Entrada(Keyboard.GetState());
 
-            posicao.X += (velocidade.X * Speed);
-            posicao.Y -= (velocidade.Y * Speed);
-            cima = (velocidade.Y > 0);
-
-            if (pulando == true)
+            verificarPerdeu();
+            
+               if (pulando)
             {
-                velocidade.Y = (float)(VeloInicial + (gravidade * tempo));
-                tempo += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (pulando == true && posicao.Y > screenBound.Height - texture.Height)
-            {
-                posicao.Y = personagemchao = screenBound.Height - texture.Height;
-                velocidade.Y = 0;
-                pulando = false;
-                tempo = 0;
+                caindo = false;
+                float diff = 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                alturaPulo += diff;
+                posicao.Y -= diff;
             }
 
-            if (posicao.X < 0)
-            {
-                posicao.X = 0;
-                velocidade.X = 0;
-            }
-            else if (posicao.X + texture.Width > screenBound.Width)
-            {
-                posicao.X = screenBound.Width - texture.Width;
-                velocidade.X = 0;
-            }
-            if (posicao.Y < 0)
-            {
-                posicao.Y = 0;
-                tempo = 0;
-                VeloInicial = 0;
-            }
-        }
+            if (alturaPulo > 300)
+               {
+                   caindo = true;
+                   pulando = false;
+                   alturaPulo = 0;
+               }
+               
+            executarGravidade(gameTime);
 
-        public void Entrada(KeyboardState keyState)
-        {
-            if (keyState.IsKeyDown(Keys.Space) && (pulando == false || posicao.Y == personagemchao))
+
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.A))
             {
+                posicao.X = posicao.X - 500 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (state.IsKeyDown(Keys.D)){
+                posicao.X = posicao.X + 500 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (state.IsKeyDown(Keys.Space) && (!pulando && !caindo))
+            {
+                alturaPulo = 0;
                 pulando = true;
-                posicao.Y -= 1;
-                VeloInicial = jumpU;
-            }
-            if (keyState.IsKeyDown(Keys.A) && !keyState.IsKeyDown(Keys.D))
-            {
-                if (keyState.IsKeyDown(Keys.A))
-                {
-                    if (velocidade.X > -2.0f)
-                        velocidade.X -= (1.0f / 10);
-                }
-                else if (velocidade.X > -1.0f)
-                {
-                    velocidade.X -= (1.0f / 10);
-                }
-                else
-                {
-                    velocidade.X = -1.0f;
-                }
-            }
-            else if (!keyState.IsKeyDown(Keys.A) && keyState.IsKeyDown(Keys.D))
-            {
-                if (keyState.IsKeyDown(Keys.A))
-                {
-                    if (velocidade.X < 2.0f)
-                        velocidade.X += (1.0f / 10);
-                }
-                else if (velocidade.X < 1.0f)
-                {
-                    velocidade.X += (1.0f / 10);
-                }
-                else
-                {
-                    velocidade.X = 1.0f;
-                }
-            }
-            else
-            {
-                if (velocidade.X > 0.05 || velocidade.X < -0.05)
-                    velocidade.X *= 0.90f;
-                else
-                    velocidade.X = 0;
             }
 
-            tecla = keyState;
+
+            //sempre deve ser a ultima linha
+            caindo = true;
         }
 
-        public void Fall()
+      
+         
+
+        private void executarGravidade(GameTime gameTime)
         {
-            tempo = 0;
-            VeloInicial = 0;
+            if (caindo )
+            {
+                posicao.Y = posicao.Y + 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
         }
+
+        private void verificarPerdeu()
+        {
+            if (posicao.Y > screenBound.Height)
+            {
+                posicao.X = posicaoInicial.X;
+                posicao.Y = posicaoInicial.Y;
+            }
+        }
+
 
         public override void Colidir(Cenario cenario, GameObject obj, Posicao posicaoObj)
         {
@@ -142,11 +95,20 @@ namespace Game1
             {
                 cenario.RemoveGameObject(obj);
             }
-            if (obj is Plataforma && cenario.getGameObjectRectangle(this).Bottom < cenario.getGameObjectRectangle(obj).Top)
+            if (obj is Plataforma)
             {
-                this.velocidade.Y = 0;
-                pulando = false;
-                tempo = 0;
+                Plataforma plat = (Plataforma)obj;
+                if (plat.BlockState == 2 && posicaoObj == Posicao.CIMA)
+                {
+                    caindo = false;
+                }
+               if(plat.BlockState == 1 && posicaoObj == Posicao.CIMA )
+               {
+                   caindo = false;
+               }
+
+               caindo = false;
+                
             }
 
         }

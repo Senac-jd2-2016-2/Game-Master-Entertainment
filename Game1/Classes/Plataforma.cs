@@ -18,7 +18,7 @@ namespace Game1
 
         //Texture2D Texture;
         //Vector2 Posicao;
-        int BlockState;
+        public int BlockState;
 
            public Plataforma(Texture2D Texture, Vector2 Posicao, int BlockState)
            {

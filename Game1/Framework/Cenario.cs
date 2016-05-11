@@ -30,33 +30,33 @@ namespace Game1.Framework
         private bool TouchTopOf(Rectangle r1, Rectangle r2)
         {
             return (r1.Bottom >= r2.Top - 1 &&
-                    r1.Bottom <= r2.Top + (r2.Height / 2) &&
-                    r1.Right >= r2.Left + r2.Width / 5 &&
-                    r1.Left <= r2.Right - r2.Width / 5);
+                    r1.Bottom <= r2.Top &&
+                    r1.Right >= r2.Left &&
+                    r1.Left <= r2.Right);
         }
 
         private bool TouchBottomOf(Rectangle r1, Rectangle r2)
         {
-            return (r1.Top <= r2.Bottom + (r2.Height / 5) &&
-                    r1.Top >= r2.Bottom - 1 &&
-                    r1.Right >= r2.Left + (r2.Width / 5) &&
-                    r1.Left <= r2.Right - (r2.Width / 5));
+            return (r1.Top <= r2.Bottom &&
+                    r1.Top >= r2.Bottom  &&
+                    r1.Right >= r2.Left  &&
+                    r1.Left <= r2.Right );
         }
 
         private bool TouchLeftOf(Rectangle r1, Rectangle r2)
         {
             return (r1.Right <= r2.Right &&
-                    r1.Right >= r2.Right - 5 &&
-                    r1.Top <= r2.Bottom - (r2.Width / 4) &&
-                    r1.Bottom >= r2.Top + (r2.Width / 4));
+                    r1.Right >= r2.Right &&
+                    r1.Top <= r2.Bottom &&
+                    r1.Bottom >= r2.Top);
         }
 
         private bool TouchRightOf(Rectangle r1, Rectangle r2)
         {
             return (r1.Left <= r2.Left &&
-                    r1.Left >= r2.Left - 5 &&
-                    r1.Top <= r2.Bottom - (r2.Width / 4) &&
-                    r1.Bottom >= r2.Top + (r2.Width / 4));
+                    r1.Left >= r2.Left &&
+                    r1.Top <= r2.Bottom &&
+                    r1.Bottom >= r2.Top);
         }
 
         private void detectarColisao()
