@@ -72,34 +72,82 @@ namespace Game1.Framework
                     Rectangle rectObj1 = getGameObjectRectangle(obj1);
                     Rectangle rectObj2 = getGameObjectRectangle(obj2);
 
-                    if (TouchTopOf(rectObj1, rectObj2))
+                    if (rectObj1.Intersects(rectObj2))
                     {
-                        obj1.Colidir(this, obj2, Posicao.CIMA);
-                        obj2.Colidir(this, obj1, Posicao.BAIXO);
+
+                        double w = 0.5 * (rectObj1.Width + rectObj2.Width);
+                        double h = 0.5 * (rectObj1.Height + rectObj2.Height);
+                        float dx = rectObj1.Center.X - rectObj2.Center.X;
+                        float dy = rectObj1.Center.Y - rectObj2.Center.Y;
+
+                        if (Math.Abs(dx) <= w && Math.Abs(dy) <= h)
+                        {
+                            double wy = w * dy;
+                            double hx = h * dx;
+
+                            if (wy > hx)
+                            {
+                                if (wy > -hx)
+                                {
+                                    /* collision at the top */
+                                    obj1.Colidir(this, obj2, Posicao.CIMA);
+                                    obj2.Colidir(this, obj1, Posicao.BAIXO);
+                                }
+                                else
+                                {
+                                    /* on the left */
+                                    obj1.Colidir(this, obj2, Posicao.DIREITA);
+                                    obj2.Colidir(this, obj1, Posicao.ESQUERDA);
+                                }
+                            }
+                            else
+                            {
+                                if (wy > -hx)
+                                {
+                                    /* on the right */
+                                    obj1.Colidir(this, obj2, Posicao.ESQUERDA);
+                                    obj2.Colidir(this, obj1, Posicao.DIREITA);
+                                }
+                                else
+                                {
+                                    /* at the bottom */
+                                    obj1.Colidir(this, obj2, Posicao.BAIXO);
+                                    obj2.Colidir(this, obj1, Posicao.CIMA);
+                                }
+                            }
+                        }
+
                     }
 
-                    if (TouchLeftOf(rectObj1, rectObj2))
-                    {
-                        obj1.Colidir(this, obj2, Posicao.ESQUERDA);
-                        obj2.Colidir(this, obj1, Posicao.DIREITA);
+                        //if (TouchTopOf(rectObj1, rectObj2))
+                        //{
+                        //    obj1.Colidir(this, obj2, Posicao.CIMA);
+                        //    obj2.Colidir(this, obj1, Posicao.BAIXO);
+                        //}
+
+                        //if (TouchLeftOf(rectObj1, rectObj2))
+                        //{
+                        //    obj1.Colidir(this, obj2, Posicao.ESQUERDA);
+                        //    obj2.Colidir(this, obj1, Posicao.DIREITA);
+                        //}
+                        //if (TouchRightOf(rectObj1, rectObj2))
+                        //{
+                        //    obj1.Colidir(this, obj2, Posicao.DIREITA);
+                        //    obj2.Colidir(this, obj1, Posicao.ESQUERDA);
+                        //}
+                        //if (TouchBottomOf(rectObj1, rectObj2))
+                        //{
+                        //    obj1.Colidir(this, obj2, Posicao.BAIXO);
+                        //    obj2.Colidir(this, obj1, Posicao.CIMA);
+                        //}
                     }
-                    if (TouchRightOf(rectObj1, rectObj2))
-                    {
-                        obj1.Colidir(this, obj2, Posicao.DIREITA);
-                        obj2.Colidir(this, obj1, Posicao.ESQUERDA);
-                    }
-                    if (TouchBottomOf(rectObj1, rectObj2))
-                    {
-                        obj1.Colidir(this, obj2, Posicao.BAIXO);
-                        obj2.Colidir(this, obj1, Posicao.CIMA);
-                    }
-                }
             }
         }
 
         public void Update(GameTime gameTime)
         {
             foreach(GameObject go in objetos){
+                go.posicaoAnterior = go.posicao;
                 go.Update(gameTime);
             }
             detectarColisao();

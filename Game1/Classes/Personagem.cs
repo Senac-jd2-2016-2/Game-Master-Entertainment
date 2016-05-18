@@ -59,6 +59,7 @@ namespace Game1
             }
             if (state.IsKeyDown(Keys.Space) && (!pulando && !caindo))
             {
+                posicao.Y -= 5;
                 alturaPulo = 0;
                 pulando = true;
             }
@@ -98,17 +99,18 @@ namespace Game1
             if (obj is Plataforma)
             {
                 Plataforma plat = (Plataforma)obj;
-                if (plat.BlockState == 2 && posicaoObj == Posicao.CIMA)
+                if (posicaoObj == Posicao.BAIXO)
                 {
                     caindo = false;
+                    obj.retornarAnterior();
                 }
-               if(plat.BlockState == 1 && posicaoObj == Posicao.CIMA )
-               {
-                   caindo = false;
-               }
+                if (posicaoObj == Posicao.CIMA)
+                {
+                    caindo = true;
+                    pulando = false;
 
-               caindo = false;
-                
+                }
+
             }
 
         }

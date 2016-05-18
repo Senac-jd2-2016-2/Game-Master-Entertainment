@@ -17,6 +17,13 @@ namespace Game1.Framework
 
         public Vector2 posicao;
 
+        public Vector2 posicaoAnterior;
+
+        public void retornarAnterior()
+        {
+            posicao = posicaoAnterior;
+        }
+
         public virtual void Update(GameTime gameTime)
         {
 

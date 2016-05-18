@@ -13,19 +13,15 @@ namespace Game1
 {
     public class Game1 : Game
     {
-        GraphicsDeviceManager Graficos;
-        SpriteBatch spriteBatch;
-        KeyboardState prevKB;
-
-        List<Plataforma> Blocks;
-        //List<Fruta> Frutas;
+        private GraphicsDeviceManager Graficos;
+        private SpriteBatch spriteBatch;
 
         private Cenario cenario = new Cenario();
 
-        List<char[,]> Levels = new List<char[,]>();
+        private List<char[,]> Levels = new List<char[,]>();
 
-        public int tileWidth, tileHeight;
-        public int currentLevel;
+        private int tileWidth, tileHeight;
+        private int currentLevel;
 
         public Game1()
         {
@@ -159,52 +155,17 @@ namespace Game1
         protected override void Update(GameTime gameTime)
         {
             //Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            //    this.Exit();
 
-            //HandleInput(Keyboard.GetState());
             cenario.Update(gameTime);
-            //Lycans.Update(gameTime);
-
-            //foreach (Plataforma b in Blocks)
-            //{
-                //Lycans = b.ColisaoBloco(Lycans);
-            //}
-
-            //for (int i = Frutas.Count - 1; i >= 0; i--)
-            //{
-            //    if (Frutas[i].colidindo(new Rectangle((int)Lycans.posicao.X, (int)Lycans.posicao.Y, Lycans.texture.Width, Lycans.texture.Height)))
-            //    {
-            //        Frutas.RemoveAt(i);
-            //    }
-            //}
-            //prevKB = Keyboard.GetState();
-
             base.Update(gameTime);
-        }
-
-        void HandleInput(KeyboardState keyState)
-        {
-            //Lycans.Entrada(keyState);
-            //if (prevKB.IsKeyUp(Keys.F) && keyState.IsKeyDown(Keys.F))
-            //{
-            //    this.Graficos.ToggleFullScreen();
-            //    this.Graficos.ApplyChanges();
-            //}
-
-            //if (prevKB.IsKeyUp(Keys.L) && keyState.IsKeyDown(Keys.L))
-            //{
-            //    currentLevel = (currentLevel + 1) % Levels.Count;
-            //    LoadLevel(currentLevel);
-            //}
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.AliceBlue);
-
             spriteBatch.Begin();
-           
 
             cenario.Draw(spriteBatch);           
             
